@@ -10,3 +10,5 @@ Size: 12.82 MB
 
 Alternativly, you can start a local single node cluster with included script: [start_etcd.sh](https://raw.githubusercontent.com/anapsix/etcd/master/start_etcd.sh)
 
+    ETCD_INITIAL_CLUSTER_STATE=new ./start_etcd.sh
+
