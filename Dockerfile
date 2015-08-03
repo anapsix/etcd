@@ -2,9 +2,7 @@ FROM  scratch
 
 ENV ETCD_RELEASE=2.0.13
 
-ADD etcd-v${ETCD_RELEASE}-linux-amd64/etcd        /bin/etcd
-# exclude the cli tool to reduce the size of the image
-ADD etcd-v${ETCD_RELEASE}-linux-amd64/etcdctl     /bin/etcdctl
+COPY etcd-v${ETCD_RELEASE}-linux-amd64/etcd etcd-v${ETCD_RELEASE}-linux-amd64/etcdctl /bin/
 
 VOLUME ["/data"]
 
