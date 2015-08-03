@@ -1,4 +1,4 @@
-Repo containing Dockerfile to create a buxybox based ETCD image. 
+Repo containing Dockerfile to create a busybox based ETCD image. 
 Clone of `microbox/etcd` with upgraded version of ETCD
 
 [![](https://badge.imagelayers.io/anapsix/etcd:latest.svg)](https://imagelayers.io/?images=anapsix/etcd:latest)
