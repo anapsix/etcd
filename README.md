@@ -1,9 +1,9 @@
 Repo containing Dockerfile to create a busybox based ETCD image. 
-Clone of `microbox/etcd` with upgraded version of ETCD
+Clone of `microbox/etcd` with upgraded version of ETCD, [goUPX](https://github.com/pwaller/goupx) packed.
 
 [![](https://badge.imagelayers.io/anapsix/etcd:latest.svg)](https://imagelayers.io/?images=anapsix/etcd:latest)
 
-ETCD Version: 2.1.1
+ETCD Version: 2.1.3
 
 ### Usage
 
