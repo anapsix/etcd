@@ -4,7 +4,7 @@
 
 Starting an etcd cluster statically requires that each member knows another in the cluster. In a number of cases, you might not know the IPs of your cluster members ahead of time. In these cases, you can bootstrap an etcd cluster with the help of a discovery service.
 
-Once an etcd cluster is up and running, adding or removing members is done via [runtime reconfiguration](runtime-configuration.md).
+Once an etcd cluster is up and running, adding or removing members is done via [runtime reconfiguration](runtime-configuration.md). To better understand the design behind runtime reconfiguration, we suggest you read [this](runtime-reconf-design.md).
 
 This guide will cover the following mechanisms for bootstrapping an etcd cluster:
 
@@ -37,6 +37,8 @@ ETCD_INITIAL_CLUSTER_STATE=new
 Note that the URLs specified in `initial-cluster` are the _advertised peer URLs_, i.e. they should match the value of `initial-advertise-peer-urls` on the respective nodes.
 
 If you are spinning up multiple clusters (or creating and destroying a single cluster) with same configuration for testing purpose, it is highly recommended that you specify a unique `initial-cluster-token` for the different clusters. By doing this, etcd can generate unique cluster IDs and member IDs for the clusters even if they otherwise have the exact same configuration. This can protect you from cross-cluster-interaction, which might corrupt your clusters.
+
+etcd listens on [`listen-client-urls`](configuration.md#-listen-client-urls) to accept client traffic. etcd member advertises the URLs specified in [`advertise-client-urls`](configuration.md#-advertise-client-urls) to other members, proxies, clients. Please make sure the `advertise-client-urls` are reachable from intended clients. A common mistake is setting `advertise-client-urls` to localhost or leave it as default when you want the remote clients to reach etcd.
 
 On each machine you would start etcd with these flags:
 
@@ -122,6 +124,8 @@ There two methods that can be used for discovery:
 
 ### etcd Discovery
 
+To better understand the design about discovery service protocol, we suggest you read [this](./discovery_protocol.md).
+
 #### Lifetime of a Discovery URL
 
 A discovery URL identifies a unique etcd cluster. Instead of reusing a discovery URL, you should always create discovery URLs for new clusters.
@@ -143,6 +147,8 @@ By setting the size key to the URL, you create a discovery URL with an expected 
 If you bootstrap an etcd cluster using discovery service with more than the expected number of etcd members, the extra etcd processes will [fall back][fall-back] to being [proxies][proxy] by default.
 
 The URL you will use in this case will be `https://myetcd.local/v2/keys/discovery/6c007a14875d53d9bf0ef5a6fc0257c817f0fb83` and the etcd members will use the `https://myetcd.local/v2/keys/discovery/6c007a14875d53d9bf0ef5a6fc0257c817f0fb83` directory for registration as they start.
+
+Each member must have a different name flag specified. Or discovery will fail due to duplicated name.
 
 Now we start etcd with those relevant flags for each member:
 
@@ -193,6 +199,8 @@ ETCD_DISCOVERY=https://discovery.etcd.io/3e86b59982e49066c5d813af1c2e2579cbf573d
 ```
 -discovery https://discovery.etcd.io/3e86b59982e49066c5d813af1c2e2579cbf573de
 ```
+
+Each member must have a different name flag specified. Or discovery will fail due to duplicated name.
 
 Now we start etcd with those relevant flags for each member:
 
@@ -296,6 +304,8 @@ infra2.example.com.	300	IN	A	10.0.1.12
 
 etcd cluster members can listen on domain names or IP address, the bootstrap process will resolve DNS A records.
 
+The resolved address in `-initial-advertise-peer-urls` *must match* one of the resolved addresses in the SRV targets. The etcd member reads the resolved address to find out if it belongs to the cluster defined in the SRV records.
+
 ```
 $ etcd -name infra0 \
 -discovery-srv example.com \
@@ -371,6 +381,10 @@ DNS SRV records can also be used to configure the list of peers for an etcd serv
 ```
 $ etcd --proxy on -discovery-srv example.com
 ```
+
+#### Error Cases
+
+You might see the an error like `cannot find local etcd $name from SRV records.`. That means the etcd member fails to find itself from the cluster defined in SRV records. The resolved address in `-initial-advertise-peer-urls` *must match* one of the resolved addresses in the SRV targets.
 
 # 0.4 to 2.0+ Migration Guide
 

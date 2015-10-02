@@ -3,7 +3,7 @@ Clone of `microbox/etcd` with upgraded version of ETCD, [goUPX](https://github.c
 
 [![](https://badge.imagelayers.io/anapsix/etcd:latest.svg)](https://imagelayers.io/?images=anapsix/etcd:latest)
 
-ETCD Version: 2.1.3
+ETCD Version: 2.2.0
 
 ### Usage
 
