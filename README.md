@@ -1,13 +1,13 @@
 Repo containing Dockerfile to create a busybox based ETCD image. 
 Clone of `microbox/etcd` with upgraded version of ETCD, [goUPX](https://github.com/pwaller/goupx) packed.
 
-[![](https://badge.imagelayers.io/anapsix/etcd:latest.svg)](https://imagelayers.io/?images=anapsix/etcd:2.2.2)
+[![](https://badge.imagelayers.io/anapsix/etcd:latest.svg)](https://imagelayers.io/?images=anapsix/etcd:2.2.3)
 
-ETCD Version: 2.2.2
+ETCD Version: 2.2.3
 
 ### Usage
 
-    docker run --rm -it -p 4001:4001 -p 7001:7001 -v /var/etcd:/data anapsix/etcd:2.2.2 --help
+    docker run --rm -it -p 4001:4001 -p 7001:7001 -v /var/etcd:/data anapsix/etcd:2.2.3 --help
 
 Alternatively, you can start a local single node cluster with included script: [start_etcd.sh](https://raw.githubusercontent.com/anapsix/etcd/master/start_etcd.sh)
 
