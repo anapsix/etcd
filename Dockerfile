@@ -1,6 +1,6 @@
 FROM  scratch
 
-ENV ETCD_RELEASE=2.2.5
+ENV ETCD_RELEASE=2.3.0
 
 COPY etcd-v${ETCD_RELEASE}-linux-amd64/etcd etcd-v${ETCD_RELEASE}-linux-amd64/etcdctl /bin/
 
